@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DON'T LOOK BEHIND YOU 👻</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+    color: white;
+    font-family: Georgia, serif;
+}
+
+#game {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle,
+            #252525 0%,
+            #090909 45%,
+            #000 100%
+        );
+}
+
+.screen {
+    width: 90%;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: clamp(38px, 11vw, 70px);
+    letter-spacing: 4px;
+
+    text-shadow:
+        0 0 10px red,
+        0 0 25px #700;
+}
+
+.red {
+    color: #d00000;
+}
+
+p {
+    font-size: 19px;
+    line-height: 1.6;
+}
+
+button {
+    padding: 16px 32px;
+
+    margin-top: 20px;
+
+    background: #080808;
+    color: white;
+
+    border: 2px solid #a00000;
+    border-radius: 8px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    box-shadow:
+        0 0 15px #500000;
+}
+
+button:active {
+    transform: scale(.90);
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* COUNTDOWN */
+
+#count {
+    font-size: 110px;
+
+    color: #d00000;
+
+    text-shadow:
+        0 0 15px red,
+        0 0 40px #700;
+}
+
+
+/* MESSAGE */
+
+#message {
+    min-height: 100px;
+
+    font-size: 24px;
+
+    text-shadow:
+        0 0 10px #555;
+}
+
+
+/* JUMPSCARE */
+
+#jumpscare {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    background: #000;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    animation:
+        shake .06s infinite;
+}
+
+
+/* HORROR FACE */
+
+.face {
+
+    position: absolute;
+
+    width: 75vw;
+    height: 75vw;
+
+    max-width: 420px;
+    max-height: 420px;
+
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(
+            circle at 35% 35%,
+            white 0 6%,
+            black 7% 13%,
+            transparent 14%
+        ),
+
+        radial-gradient(
+            circle at 65% 35%,
+            white 0 6%,
+            black 7% 13%,
+            transparent 14%
+        ),
+
+        radial-gradient(
+            ellipse,
+            #777 0%,
+            #222 50%,
+            #000 75%
+        );
+
+    box-shadow:
+
+        0 0 40px red,
+
+        0 0 100px #700;
+}
+
+
+/* MOUTH */
+
+.face::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 45%;
+    height: 25%;
+
+    left: 27%;
+    bottom: 18%;
+
+    background: #000;
+
+    border-radius: 50%;
+
+    border:
+        5px solid #555;
+}
+
+
+/* PRANK TEXT */
+
+.scareText {
+
+    position: absolute;
+
+    z-index: 110;
+
+    width: 100%;
+
+    padding: 20px;
+
+    text-shadow:
+        0 0 20px red;
+}
+
+.scareText h2 {
+
+    font-size:
+        clamp(
+            45px,
+            13vw,
+            90px
+        );
+
+    color: red;
+
+    margin: 0;
+}
+
+.scareText p {
+
+    font-size: 24px;
+}
+
+
+/* SHAKE */
+
+@keyframes shake {
+
+    0% {
+        transform:
+            translate(0,0);
+    }
+
+    25% {
+        transform:
+            translate(8px,-6px);
+    }
+
+    50% {
+        transform:
+            translate(-8px,6px);
+    }
+
+    75% {
+        transform:
+            translate(6px,8px);
+    }
+
+    100% {
+        transform:
+            translate(-6px,-8px);
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div id="game">
+
+
+<!-- =========================
+     START SCREEN
+========================= -->
+
+<div id="start" class="screen">
+
+    <h1>
+
+        DON'T LOOK
+
+        <br>
+
+        <span class="red">
+            BEHIND YOU
+        </span>
+
+    </h1>
+
+
+    <p>
+
+        Hello,
+
+        <b>Zhar...</b>
+
+        👀
+
+    </p>
+
+
+    <p>
+
+        May kailangan akong sabihin sa'yo...
+
+        <br><br>
+
+        Pero please...
+
+        <br>
+
+        <span class="red">
+
+            HUWAG KANG LILINGON.
+
+        </span>
+
+    </p>
+
+
+    <button
+        onclick="startGame()">
+
+        START GAME 👻
+
+    </button>
+
+
+    <p
+        style="
+        font-size:13px;
+        color:#777;
+        ">
+
+        ⚠️ Horror prank game
+
+    </p>
+
+</div>
+
+
+
+<!-- =========================
+     GAME SCREEN
+========================= -->
+
+<div
+    id="playing"
+    class="screen hidden">
+
+
+    <h2 id="level">
+
+        LEVEL 1
+
+    </h2>
+
+
+    <div id="message">
+
+        Zhar...
+
+        may naririnig ka ba?
+
+    </div>
+
+
+    <div id="count">
+
+        10
+
+    </div>
+
+
+    <p>
+
+        Tumingin lang sa screen...
+
+        <br>
+
+        <span class="red">
+
+            HUWAG LILINGON.
+
+        </span>
+
+    </p>
+
+
+    <button
+        onclick="continueGame()">
+
+        I'M STILL HERE 😭
+
+    </button>
+
+
+</div>
+
+
+
+<!-- =========================
+     JUMPSCARE
+========================= -->
+
+<div
+    id="jumpscare"
+    class="hidden">
+
+
+    <div class="face"></div>
+
+
+    <div class="scareText">
+
+
+        <h2>
+
+            BOOO! 😱
+
+        </h2>
+
+
+        <p>
+
+            HAHAHAHAHA!
+
+            <br><br>
+
+            <b>
+
+                NA-PRANK KA, ZHAR! 😂👻
+
+            </b>
+
+        </p>
+
+
+        <p>
+
+            Made by
+
+            <b>
+
+                Best ❤️
+
+            </b>
+
+        </p>
+
+
+        <button
+            onclick="location.reload()">
+
+            PLAY AGAIN 🔄
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let count = 10;
+
+let timer;
+
+let audioCtx;
+
+
+
+/* =========================
+   AUDIO SYSTEM
+========================= */
+
+function startAudio() {
+
+    audioCtx =
+        new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
+
+}
+
+
+
+/* =========================
+   CREEPY SOUND
+========================= */
+
+function creepySound() {
+
+    if (!audioCtx)
+        return;
+
+
+    let osc =
+        audioCtx.createOscillator();
+
+
+    let gain =
+        audioCtx.createGain();
+
+
+    osc.type = "sine";
+
+
+    osc.frequency.setValueAtTime(
+        55,
+        audioCtx.currentTime
+    );
+
+
+    gain.gain.setValueAtTime(
+        0.025,
+        audioCtx.currentTime
+    );
+
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioCtx.currentTime + 1
+    );
+
+
+    osc.connect(gain);
+
+
+    gain.connect(
+        audioCtx.destination
+    );
+
+
+    osc.start();
+
+
+    osc.stop(
+        audioCtx.currentTime + 1
+    );
+
+}
+
+
+
+/* =========================
+   COUNTDOWN BEEP
+========================= */
+
+function beep() {
+
+    if (!audioCtx)
+        return;
+
+
+    let osc =
+        audioCtx.createOscillator();
+
+
+    let gain =
+        audioCtx.createGain();
+
+
+    osc.type = "sine";
+
+
+    osc.frequency.value = 150;
+
+
+    gain.gain.setValueAtTime(
+        0.08,
+        audioCtx.currentTime
+    );
+
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioCtx.currentTime + 0.3
+    );
+
+
+    osc.connect(gain);
+
+
+    gain.connect(
+        audioCtx.destination
+    );
+
+
+    osc.start();
+
+
+    osc.stop(
+        audioCtx.currentTime + 0.3
+    );
+
+}
+
+
+
+/* =========================
+   BIG JUMPSCARE SOUND
+========================= */
+
+function scarySound() {
+
+    if (!audioCtx)
+        return;
+
+
+    let now =
+        audioCtx.currentTime;
+
+
+    let frequencies = [
+
+        100,
+        160,
+        230,
+        320,
+        500,
+        700
+
+    ];
+
+
+    frequencies.forEach(
+        function(freq, index) {
+
+
+            let osc =
+                audioCtx.createOscillator();
+
+
+            let gain =
+                audioCtx.createGain();
+
+
+            osc.type =
+                index % 2 === 0
+                ? "sawtooth"
+                : "square";
+
+
+            osc.frequency.setValueAtTime(
+                freq,
+                now
+            );
+
+
+            osc.frequency.exponentialRampToValueAtTime(
+                70,
+                now + 1.2
+            );
+
+
+            gain.gain.setValueAtTime(
+                0.08,
+                now
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                now + 1.2
+            );
+
+
+            osc.connect(gain);
+
+
+            gain.connect(
+                audioCtx.destination
+            );
+
+
+            osc.start(now);
+
+
+            osc.stop(
+                now + 1.2
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   START GAME
+========================= */
+
+function startGame() {
+
+
+    startAudio();
+
+
+    document
+        .getElementById("start")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("playing")
+        .classList
+        .remove("hidden");
+
+
+    creepySound();
+
+
+    startCountdown();
+
+}
+
+
+
+/* =========================
+   LEVEL 1
+========================= */
+
+function startCountdown() {
+
+
+    count = 10;
+
+
+    document
+        .getElementById("count")
+        .innerText =
+        count;
+
+
+    timer =
+        setInterval(
+            function() {
+
+
+                count--;
+
+
+                document
+                    .getElementById("count")
+                    .innerText =
+                    count;
+
+
+                beep();
+
+
+                if (count <= 0) {
+
+
+                    clearInterval(
+                        timer
+                    );
+
+
+                    document
+                        .getElementById("message")
+                        .innerHTML =
+
+                        "<span class='red'>" +
+
+                        "Zhar..." +
+
+                        "</span><br>" +
+
+                        "May tao sa likod mo. 👀";
+
+
+                    setTimeout(
+                        function() {
+
+                            jumpscare();
+
+                        },
+
+                        1800
+                    );
+
+                }
+
+
+            },
+
+            1000
+        );
+
+}
+
+
+
+/* =========================
+   LEVEL 2
+========================= */
+
+function continueGame() {
+
+
+    clearInterval(
+        timer
+    );
+
+
+    document
+        .getElementById("level")
+        .innerText =
+
+        "LEVEL 2";
+
+
+    document
+        .getElementById("message")
+        .innerHTML =
+
+        "<span class='red'>" +
+
+        "GOOD JOB, ZHAR..." +
+
+        "</span><br>" +
+
+        "Pero hindi pa tapos. 👁️";
+
+
+    count = 5;
+
+
+    document
+        .getElementById("count")
+        .innerText =
+        count;
+
+
+    timer =
+        setInterval(
+            function() {
+
+
+                count--;
+
+
+                document
+                    .getElementById("count")
+                    .innerText =
+                    count;
+
+
+                beep();
+
+
+                if (count <= 0) {
+
+
+                    clearInterval(
+                        timer
+                    );
+
+
+                    document
+                        .getElementById("level")
+                        .innerText =
+
+                        "FINAL LEVEL";
+
+
+                    document
+                        .getElementById("message")
+                        .innerHTML =
+
+                        "<span class='red'>" +
+
+                        "DON'T LOOK BEHIND YOU..." +
+
+                        "</span>";
+
+
+                    setTimeout(
+                        function() {
+
+                            jumpscare();
+
+                        },
+
+                        1500
+                    );
+
+                }
+
+
+            },
+
+            1000
+        );
+
+}
+
+
+
+/* =========================
+   JUMPSCARE
+========================= */
+
+function jumpscare() {
+
+
+    clearInterval(
+        timer
+    );
+
+
+    document
+        .getElementById("playing")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("jumpscare")
+        .classList
+        .remove("hidden");
+
+
+    scarySound();
+
+}
+
+</script>
+
+</body>
+</html>
